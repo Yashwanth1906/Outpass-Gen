@@ -12,7 +12,7 @@ const createToken = (id) =>{
 }
 
 const studentRegister = async (req, res) => {
-    const { rollNo, name, email, password, contact, section, year, department } = req.body;
+    const { rollNo, name,  password, contact, section, year, department } = req.body;
     try {    
       const exists = await prisma.student.findUnique({
         where: {
@@ -64,7 +64,7 @@ const studentRegister = async (req, res) => {
           },
         },
       });
-      const token = createToken(newStudent.rollNo);
+      const token = createToken(newStudent.id);
       res.json({ success: true, message: "Student Created", student: newStudent, token: `Bearer ${token}` });
     } catch (err) {
       console.log(err);
@@ -87,7 +87,7 @@ const studentLogin = async (req,res)=>{
         if(!match){
             return res.json({success:false,message:"Invalid Credantails"});
         }
-        const token = createToken(student.rollNo);
+        const token = createToken(student.id);
         res.json({success:true,token:`Bearer ${token}`});
     }
     catch(err){

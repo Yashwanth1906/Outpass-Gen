@@ -6,13 +6,14 @@ import axios from "axios";
 // import { BACKEND_URL } from "../config";
 // import { Meteors } from "../sh/ui/meteors";
 import { Button } from "../components/ui/buttonss";
+import { BACKEND_URL } from "../config";
 // import { StarsBackground } from "../components/ui/stars-background";
 // import ShootingStars  from "../shadcn/ui/shooting-stars";
 
 
 export function Signin() {
-    const [rollno, setRollno] = useState<string>(" ");
-    const [passwd, setPasswd] = useState<string>(" ");
+    const [rollNo, setRollNo] = useState<string>(" ");
+    const [password, setPassword] = useState<string>(" ");
     const navigate = useNavigate();
     
 
@@ -38,26 +39,27 @@ export function Signin() {
                 <div className=" py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <div className="grid w-full max-w-sm items-center gap-1.5">
                          <label htmlFor="email" className=" flex justify-start text-white">Email</label>
-                         <Input type="text" id="email" placeholder="Rollno" onChange={(e) => setRollno(e.target.value)} />
+                         <Input type="text" id="email" placeholder="Rollno" onChange={(e) => setRollNo(e.target.value)} />
                      </div>
                     
                      <div className="grid w-full max-w-sm items-center gap-1.5 py-5  ">
                          <label htmlFor="email" className=" flex justify-start text-white">Password</label>
-                         <Input type="text" id="email" placeholder="Password" onChange={(e) => setPasswd(e.target.value)} />
+                         <Input type="text" id="email" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                      </div>
 <br></br>
-            {/* <Button className="" val={"Signin"} onClicked={async () => {
+            <Button className="" val={"Signin"} onClicked={async () => {
                          try {
-                             const res = await axios.post(`${BACKEND_URL}/api/user/login`, {
-                                 rollno,
-                                 password: passwd
+                             const res = await axios.post(`${BACKEND_URL}/api/student/login`, {
+                                 rollNo,
+                                 password
 
                              })
-                             console.log(res.data.token);
+                            
                              if (!res.data.success) {
                                  alert("user not found")
                              }
                              else {
+                                console.log(res.data.token);
                                  localStorage.setItem("usertoken", res.data.token);
                                  console.log(localStorage.getItem("token"))
                           
@@ -70,7 +72,7 @@ export function Signin() {
                             window.alert("error");
                         }
 
-                }}>Sign In</Button> */}
+                }}>Sign In</Button>
                
                     <p className="mt-2 text-center text-sm leading-5 text-white max-w">
                     {"Don't have account ? "}
