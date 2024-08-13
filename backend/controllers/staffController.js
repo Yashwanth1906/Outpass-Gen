@@ -32,7 +32,7 @@ const staffLogin = async (req,res)=>{
         const token = createToken(staff.id)
 
 
-        res.json({success:true,message:`bearer${token}`})
+        res.json({success:true,message:`bearer ${token}`})
     }
     catch(err){
         console.log(err)
@@ -142,5 +142,42 @@ const HODRegister = async(req,res)=>{
     }
 }
 
+const HODForgetPassword = async(req,res)=>{
+    const {password} = req.body;
+    try{
+        const salt = await bcrypt.genSalt(10);
+        const hashedPass = await bcrypt.hash(password,salt);
+        const updatedHOD = await prisma.hOD.update({
+            where:{
+                id:req.headers.id
+            },data:{
+                password:hashedPass
+            }
+        })
+        res.json({success:true,message:"Password Updated"})
+    }catch(err){
+        console.log(err);
+        res.json({success:false,message:err})
+    }
+}
 
-export {staffRegister,HODRegister}
+const staffForgetPassword = async(req,res)=>{
+    const {password} = req.body;
+    try{
+        const salt = await bcrypt.genSalt(10);
+        const hashedPass = await bcrypt.hash(password,salt);
+        const updatedStaff = await prisma.staff.update({
+            where:{
+                id:req.headers.id
+            },data:{
+                password:hashedPass
+            }
+        })
+        res.json({success:true,message:"Password Updated"})
+    }catch(err){
+        console.log(err);
+        res.json({success:false,message:err})
+    }
+}
+
+export {staffRegister,HODRegister,staffLogin,HODLogin,staffForgetPassword,HODForgetPassword}
