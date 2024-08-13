@@ -11,51 +11,73 @@ const createToken = (id) =>{
     return jwt.sign({id},process.env.JWT_SECRET);
 }
 
-const studentRegister = async(req,res)=>{
-    const {rollNo,name,email,password,contact,section,year,department} = req.body;
-    try{    
-        const exists = await prisma.student.findUnique({
-            where:{
-                id:rollNo
-            }
-        })
-        if(exists){
-            return res.json({success:false,message:"Student Already Found.Please Login"})
-        }
-        if(!validator.isEmail(email)){
-            return res.json({success:false,message:"Enter valid email"});
-        }
-        if(password.length < 8){
-            return res.json({success:false,message:"Password isn't strong"});
-        }
-        const salt = await bcrypt.genSalt(10);
-        const hashedPass = await bcrypt.hash(password,salt);
-        const newStudent = await prisma.student.create({
-            data:{
-                id:rollNo,
-                name,
-                email,
-                password:hashedPass,
-                contact,
-                class:section,
-                year,
-                department
-            }
-        })
-        const token = createToken(newStudent.rollNo);
-        res.json({success:true,message:"Student Created",student:newStudent,token:`Bearer ${token}`})
-    }catch(err){
-        console.log(err);
-        res.json({success:false,message:err});
+const studentRegister = async (req, res) => {
+    const { rollNo, name, email, password, contact, section, year, department } = req.body;
+    try {    
+      const exists = await prisma.student.findUnique({
+        where: {
+          id: rollNo,
+        },
+      });
+      const staffs = await prisma.staff.findMany({
+        where: {
+          class: section,
+          year: year,
+        },
+        select: {
+          id: true,
+        },
+      });
+  
+      const hod = await prisma.hOD.findMany({
+        where: {
+          department: department,
+        },
+        select: {
+          id: true,
+        },
+      });
+  
+      console.log(staffs);
+      console.log(hod);
+  
+      const salt = await bcrypt.genSalt(10);
+      const hashedPass = await bcrypt.hash(password, salt);
+  
+      const newStudent = await prisma.student.create({
+        data: {
+          id: rollNo,
+          name,
+          password: hashedPass,
+          contact,
+          class: section,
+          year,
+          department,
+          staff1: {
+            connect: { id: staffs[0].id },
+          },
+          staff2: {
+            connect: { id: staffs[1].id },
+          },
+          hod: {
+            connect: { id: hod[0].id },
+          },
+        },
+      });
+      const token = createToken(newStudent.rollNo);
+      res.json({ success: true, message: "Student Created", student: newStudent, token: `Bearer ${token}` });
+    } catch (err) {
+      console.log(err);
+      res.json({ success: false, message: err });
     }
-}
-
+  };
+  
 const studentLogin = async (req,res)=>{
     const {rollNo,password} = req.body;
     try{
         const student = await prisma.student.findUnique({
             where:{
-                rollNo:rollNo
+                id:rollNo
             },
         })
         if(!student){

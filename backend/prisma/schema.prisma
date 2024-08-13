@@ -17,7 +17,6 @@ datasource db {
 model Student{
     id String @id
     name String
-    email String
     password String
     contact String
     class String
@@ -42,29 +41,54 @@ model Outpass{
     inTime  String
     reason String
     hostelBlock String
-    advisorApproved Boolean @default(false)
-    hodApproved Boolean @default(false)
+    advisorApproved String @default("Pending")
+    hodApproved String @default("Pending")
     wardApproved Boolean @default(false)
+    staffreq StaffRequests[]
+    hodreq HODRequests[]
 }
 
 model Staff{
-    id String @id
-    email String
+    id String @id @default(uuid())
+    email String @unique
     password String
     designation String
     name String
     department String
     class String
     year Int
+    staffreq1 StaffRequests[] @relation("Staff1Request")
+    staffreq2 StaffRequests[] @relation("Staff2Request")
     primarystudent Student[] @relation("Staff1")
     secondarystudent Student[] @relation("Staff2")
 }
+model StaffRequests{
+    id String @id @default(uuid())
+    staffId1 String
+    staff1 Staff @relation("Staff1Request",fields: [staffId1],references: [id])
+    staffId2 String
+    staff2 Staff @relation("Staff2Request",fields: [staffId2],references: [id])
+    outpassId String
+    outpass Outpass @relation(fields: [outpassId],references: [id])
+    approveStatus String @default("Pending")
+}
+
+model HODRequests{
+    id String @id @default(uuid())
+    hodId String
+    Hod HOD @relation(fields: [hodId],references: [id])
+    outpassId String
+    outpass Outpass @relation(fields: [outpassId],references: [id])
+    approveStatus String @default("Pending")
+}
+
 model HOD{
-    id String @id
+    id String @id @default(uuid())
     email String
     password String
     department String
     name String
+    hodreq HODRequests[]
     student Student[]
 }
 

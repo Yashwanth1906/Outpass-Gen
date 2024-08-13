@@ -65,7 +65,7 @@ const HODRegister = async(req,res)=>{
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(password,salt);
-        const newHOD = await prisma.staff.create({
+        const newHOD = await prisma.hOD.create({
             data:{
                 email,
                 password:hashedPass,
@@ -81,4 +81,4 @@ const HODRegister = async(req,res)=>{
 }
 
 
-export {staffRegister}
+export {staffRegister,HODRegister}
