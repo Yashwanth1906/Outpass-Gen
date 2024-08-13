@@ -127,6 +127,38 @@ const editOd = async(req,res) =>{
 }
 
 
+const HODacceptRequest = async(req,res) =>{
+    const {outpassId,approval} = req.body;
+    try{
+        const updateOutpass = await prisma.outpass.update({
+            where:{
+                id:outpassId
+            },data:{
+                hodApproved:approval
+            }
+        })
+        res.json({success:true,message:"Approved By HOD",data:updateOutpass})
+    }
+    catch(err){
+        console.log(err)
+        res.json({success:true,message:err})
+    }
+}
 
-
+const staffacceptRequest = async(req,res) =>{
+    const {outpassId,approval} = req.body;
+    try{
+        const udpateOutpass = await prisma.outpass.update({
+            where:{
+                id:outpassId
+            },data:{
+                advisorApproved:approval
+            }
+        })
+        res.json({success:true,message:"Approved by Advisor",data:udpateOutpass})
+    }catch(err){
+        console.log(err)
+        res.json({success:true,message:err})
+    }
+}
 export {getOutpass,getStaffRequests}
