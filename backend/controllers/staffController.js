@@ -20,7 +20,7 @@ const staffLogin = async (req,res)=>{
                 email:email,
             }
         })
-
+        console.log(email)
 
         if (!staff){
             return res.json({success:false,message:"staff not found"})
@@ -38,7 +38,7 @@ const staffLogin = async (req,res)=>{
     }
     catch(err){
         console.log(err)
-        res.json({success:false,message:"error"})
+        res.json({success:false,message:"errooor"})
     }
 }
 

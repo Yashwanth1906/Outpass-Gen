@@ -49,7 +49,7 @@ model Outpass{
 
 model Staff{
     id String @id
-    email String
+    email String @unique
     password String
     designation String
     name String
@@ -61,7 +61,7 @@ model Staff{
 }
 model HOD{
     id String @id
-    email String
+    email String @unique
     password String
     department String
     name String
