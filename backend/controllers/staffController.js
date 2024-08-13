@@ -11,7 +11,7 @@ const createToken = (id) =>{
 }
 
 
-const stafflogin = async (req,res)=>{
+const staffLogin = async (req,res)=>{
     const {email,password}=req.body
 
     try{
@@ -43,7 +43,7 @@ const stafflogin = async (req,res)=>{
 }
 
 
-const HODlogin = async (req,res)=>{
+const HODLogin = async (req,res)=>{
     const {email,password}=req.body
 
     try{
@@ -74,4 +74,4 @@ const HODlogin = async (req,res)=>{
     }
 }
 
-export {stafflogin,HODlogin}
+export {staffLogin,HODLogin}

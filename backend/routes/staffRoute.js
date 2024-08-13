@@ -1,5 +1,5 @@
 import express from "express"
-import { HODlogin,stafflogin } from "../controllers/staffController";
+import { HODLogin,staffLogin } from "../controllers/staffController.js";
 
 const staffRouter = express.Router();
 
