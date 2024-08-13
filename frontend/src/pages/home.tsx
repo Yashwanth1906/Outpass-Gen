@@ -7,6 +7,8 @@ import { Label } from "../components/ui/label"
 import { Textarea } from "../components/ui/textarea"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../components/ui/select"
 import { useState } from "react"
+import axios from "axios"
+import { BACKEND_URL } from "../config"
 
 const times = [
     "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", 
@@ -17,14 +19,17 @@ const times = [
 ];
 
 
+const blocks=["Kaveri","Podhigai","Vaigai"]
+
+
 export  function Home() {
 
-    const [stdate,setStdate]=useState<string>("")
-    const [enddate,setEnddate]=useState<string>("")
-    const [intime,setIntime]=useState<string>("")
-    const [outtime,setOutime]=useState<string>("")
+    const [startDate,setstartDate]=useState<string>("")
+    const [endDate,setEndDate]=useState<string>("")
+    const [inTime,setInTime]=useState<string>("")
+    const [outTime,setOutime]=useState<string>("")
     const [reason,setReason]=useState<string>("")
-    const [block,setBlock]=useState<string>("")
+    const [hostelBlock,sethostelBlock]=useState<string>("")
 
 
 
@@ -73,17 +78,17 @@ export  function Home() {
             <div className="flex justify-evenly gap-4 w-full">
             < div className="flex flex-col w-full">
             <Label >Start Date</Label>
-            <input type="date" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={(e)=> {console.log(e.target.value);setStdate(e.target.value)}} />
+            <input type="date" className="mt-1 hostelBlock w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={(e)=> {console.log(e.target.value);setstartDate(e.target.value)}} />
             </div>
            
             < div className="flex flex-col w-full">
             <Label >End Date</Label>
-            <input type="date" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={(e)=>{console.log(e.target.value);setEnddate(e.target.value)}} />
+            <input type="date" className="mt-1 hostelBlock w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={(e)=>{console.log(e.target.value);setEndDate(e.target.value)}} />
             </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               
-             <Select onValueChange={(val)=>{console.log(val);setIntime(val)}}>
+             <Select onValueChange={(val)=>{console.log(val);setInTime(val)}}>
                 <SelectTrigger>
                   <SelectValue placeholder="In Time" />
                 </SelectTrigger>
@@ -108,25 +113,43 @@ export  function Home() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="reason">Reason</Label>
-              <Textarea id="reason" placeholder="Enter the reason for your outpass" onChange={(e)=>setReason(e.target.value)} />
+              <Textarea id="reason" placeholder="Enter the reason for your outpass" onChange={(e)=>{console.log(reason);setReason(e.target.value)}} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="hostel-block">Hostel Block</Label>
-              <Select onValueChange={(val)=>setBlock(val)}>
+              <Label htmlFor="hostel-hostelBlock">Hostel hostelBlock</Label>
+              <Select onValueChange={(val)=>{sethostelBlock(val)}}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select hostel block" />
+                  <SelectValue placeholder="Select hostel hostelBlock" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="block-a">Kaveri</SelectItem>
-                  <SelectItem value="block-b">Podhigai</SelectItem>
-                  <SelectItem value="block-c">Rudra</SelectItem>
-                
+                    {blocks.map((block)=>{
+                        return  <SelectItem value={block}>{block}</SelectItem> 
+                    })}
+
                 </SelectContent>
               </Select>
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="ml-auto">
+            <Button type="submit" className="ml-auto"  onClick={async ()=>{
+
+                const res=await axios.post(`${BACKEND_URL}/api/student/getOutPass`,{
+                    startDate,
+                    endDate,
+                    outTime,
+                    inTime,
+                    reason,
+                    hostelBlock
+                },{
+                    headers:{
+                        Authorization:localStorage.getItem("usertoken")
+                    }
+                })
+
+                console.log(res.data)
+            
+            
+            }}>
               Create Outpass
             </Button>
           </CardFooter>

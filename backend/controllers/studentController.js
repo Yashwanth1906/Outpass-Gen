@@ -12,7 +12,7 @@ const createToken = (id) =>{
 }
 
 const studentRegister = async (req, res) => {
-    const { rollNo, name, email, password, contact, section, year, department } = req.body;
+    const { rollNo, name,  password, contact, section, year, department } = req.body;
     try {    
       const exists = await prisma.student.findUnique({
         where: {
