@@ -59,6 +59,26 @@ const getOutpass = async(req,res)=>{
     }
 }
 
+
+const  listpasses=async function (req,res) {
+
+    try{
+        const data=await prisma.outpass.findMany
+        ({
+            where:{
+                rollNo:req.headers.id
+            }
+        })
+
+        return res.json({success:true,data})
+    }
+    catch(err)
+    {
+        return res.json({success:false})
+    }
+    
+}
+
 const getStaffRequests = async(req,res)=>{
     const staffId = req.headers.id;
     try{
@@ -129,4 +149,4 @@ const editOd = async(req,res) =>{
 
 
 
-export {getOutpass,getStaffRequests}
+export {getOutpass,getStaffRequests,listpasses,editOd}

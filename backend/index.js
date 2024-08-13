@@ -17,6 +17,10 @@ app.listen(process.env.BACKEND_PORT,()=>{
 })
 
 app.delete("/test",async(req,res)=>{
-    await prisma.student.deleteMany({})
+    await prisma.outpass.delete({
+        where:{
+            id:"f61407a3-83bb-4269-ad24-4d8c3ffa1a55"
+        }
+    })
     res.json({success:true})
 })
