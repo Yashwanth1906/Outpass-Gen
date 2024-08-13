@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Student{
+    rollNo String @id
+    name String
+    email String
+    password String
+    contact String
+    class String
+    year Int
+    department String
+    op Outpass[]
+}
+
+model Outpass{
+    id String @id @default(uuid())
+    rollNo String
+    student Student @relation(fields: [rollNo],references: [rollNo])
+    startDate String
+    endDate   String
+    outTime String
+    inTime  String
+    reason String
+    hostelBlock String
+    advisorApproved Boolean @default(false)
+    hodApproved Boolean @default(false)
+    wardApproved Boolean @default(false)
+}
+
+model Staff{
+    email String @id
+    password String
+    designation String
+    name String
+    department String
+    class String
+    year String
+}
+
+model Warden{
+    email String @id
+    password String
+    name String
+}
+
