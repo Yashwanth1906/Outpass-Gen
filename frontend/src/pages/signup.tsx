@@ -9,7 +9,7 @@ export function Signup() {
     const [password, setPassword] = useState<string>(" ");
     const [name, setName] = useState<string>(" ");
     const [rollNo, setRollNo] = useState<string>(" ");
-    const [year, setYear] = useState<string>(" ");
+    const [year, setYear] = useState<number>();
     const [department, setDepartment] = useState<string>(" ");
     const [section, setSection] = useState<string>(" ");
     const [contact, setContact] = useState<string>(" ");
@@ -54,7 +54,7 @@ export function Signup() {
                             <label htmlFor="year" className="block text-white mb-1">
                                 Year
                             </label>
-                            <Input type="text" placeholder="Year" onChange={(e) => setYear(e.target.value)} />
+                            <Input type="text" placeholder="Year" onChange={(e) => setYear(parseInt(e.target.value))} />
                         </div>
 
                         <div>
@@ -93,9 +93,17 @@ export function Signup() {
 
                                 })
                                 //@ts-ignore
-                                localStorage.setItem("usertoken",res.data.token);
+                                if(res.data.success==false)
+                                {
+                                    alert("error")
+                                }
+                                else{
+                                    localStorage.setItem("usertoken",res.data.token);
                                 console.log(res);
-                                window.alert("done")
+                                    navigate("/home")
+                                }
+                              
+                                
                             }
                             catch{
                                 window.alert("error");
