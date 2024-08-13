@@ -17,12 +17,13 @@ const studentRegister = async (req, res) => {
       const exists = await prisma.student.findUnique({
         where: {
           id: rollNo,
-        },
+        }
       });
       const staffs = await prisma.staff.findMany({
         where: {
-          class: section,
-          year: year,
+          class:section,
+          year:year,
+          department:department
         },
         select: {
           id: true,

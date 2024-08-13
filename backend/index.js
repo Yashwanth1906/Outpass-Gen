@@ -4,7 +4,7 @@ import { studentRouter } from "./routes/studentRoute.js";
 import { PrismaClient } from "@prisma/client";
 import { staffRouter } from "./routes/staffRoute.js";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 const app = express();
 app.use(express.json())
 app.use(cors())
