@@ -59,4 +59,74 @@ const getOutpass = async(req,res)=>{
     }
 }
 
-export {getOutpass}
+const getStaffRequests = async(req,res)=>{
+    const staffId = req.headers.id;
+    try{
+        const requests = await prisma.staffRequests.findMany({
+            where:{
+                OR:[
+                    {staffId1:staffId},
+                    {staffId2:staffId}
+                ]
+            },select:{
+                outpassId:true
+            }
+        })
+        let allrequests = [];
+        for (const x of requests){
+            console.log(x)
+            const studentRequest = await prisma.outpass.findUnique({
+                where:{
+                    id : x.outpassId
+                },select:{
+                    id:true,
+                    rollNo:true,
+                    student:{
+                        select:{
+                            name:true,
+                            class:true,
+                            year:true,
+                            department:true,
+                        }
+                    },
+                    startDate:true,
+                    endDate:true,
+                    outTime:true,
+                    inTime:true,
+                    reason:true,
+                    hostelBlock:true
+                }
+            })
+            allrequests.push(studentRequest)
+        }
+        res.json({success:true,data:allrequests})
+    }catch(err){
+        console.log(err);
+        res.json({success:false,message:err})
+    }
+}
+
+const editOd = async(req,res) =>{
+    const {odId,startDate,endDate,outTime,inTime} = req.body;
+    try{
+        const updatedOutpass = await prisma.outpass.update({
+            where:{
+                id:odId
+            },data:{
+                startDate:startDate,
+                endDate:endDate,
+                outTime:outTime,
+                inTime:inTime
+            }
+        })
+        res.json({success:true,data:updatedOutpass})
+    }catch(err){
+        console.log(err);
+        res.json({success:false,data:err})
+    }
+}
+
+
+
+
+export {getOutpass,getStaffRequests}
