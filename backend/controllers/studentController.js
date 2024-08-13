@@ -16,7 +16,7 @@ const studentRegister = async(req,res)=>{
     try{    
         const exists = await prisma.student.findUnique({
             where:{
-                rollNo:rollNo
+                id:rollNo
             }
         })
         if(exists){

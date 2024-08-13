@@ -55,7 +55,7 @@ model Staff{
     name String
     department String
     class String
-    year String
+    year Int
     primarystudent Student[] @relation("Staff1")
     secondarystudent Student[] @relation("Staff2")
 }

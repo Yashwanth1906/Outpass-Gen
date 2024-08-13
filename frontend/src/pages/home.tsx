@@ -3,12 +3,19 @@ import { Link } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../components/ui/card"
-import { Popover, PopoverTrigger, PopoverContent } from "../components/ui/popover"
-import { Calendar } from "../components/ui/calendar"
 import { Label } from "../components/ui/label"
 import { Textarea } from "../components/ui/textarea"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../components/ui/select"
 import { useState } from "react"
+
+const times = [
+    "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", 
+    "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", 
+    "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", 
+    "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", 
+    "24:00"
+];
+
 
 export  function Home() {
 
@@ -35,18 +42,15 @@ export  function Home() {
           <span className="text-xl font-bold">Outpass</span>
         </Link>
         <nav className="flex flex-col gap-2">
-          <Link to="#" className="flex items-center gap-2 hover:text-primary-foreground/80" >
+          <Link to="/home" className="flex items-center gap-2 hover:text-primary-foreground/80" >
             <CalendarIcon className="w-5 h-5" />
-            <span>Dashboard</span>
+            <span>Home</span>
           </Link>
-          <Link to="#" className="flex items-center gap-2 hover:text-primary-foreground/80" >
+          <Link to="/outpass" className="flex items-center gap-2 hover:text-primary-foreground/80" >
             <ListIcon className="w-5 h-5" />
             <span>Outpasses</span>
           </Link>
-          <Link to="#" className="flex items-center gap-2 hover:text-primary-foreground/80" >
-            <SettingsIcon className="w-5 h-5" />
-            <span>Settings</span>
-          </Link>
+      
         </nav>
       </div>
       <div className="flex-1 bg-background p-8">
@@ -55,8 +59,8 @@ export  function Home() {
           <div className="flex items-center gap-4">
         
             <Avatar>
-              <AvatarImage  />
-              <AvatarFallback>JD</AvatarFallback>
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </div>
         </header>
@@ -69,38 +73,37 @@ export  function Home() {
             <div className="flex justify-evenly gap-4 w-full">
             < div className="flex flex-col w-full">
             <Label >Start Date</Label>
-            <input type="date" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={(e)=>setStdate(e.target.value)} />
+            <input type="date" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={(e)=> {console.log(e.target.value);setStdate(e.target.value)}} />
             </div>
            
             < div className="flex flex-col w-full">
             <Label >End Date</Label>
-            <input type="date" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={(e)=>setEnddate(e.target.value)} />
+            <input type="date" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={(e)=>{console.log(e.target.value);setEnddate(e.target.value)}} />
             </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               
-             <Select onValueChange={(val)=>setIntime(val)}>
+             <Select onValueChange={(val)=>{console.log(val);setIntime(val)}}>
                 <SelectTrigger>
                   <SelectValue placeholder="In Time" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="block-a">07:00</SelectItem>
-                  <SelectItem value="block-b">08:00</SelectItem>
-                  <SelectItem value="block-c">09:00</SelectItem>
-                
+                {times.map((time)=>{
+                     return <SelectItem value={time}>{time}</SelectItem>
+                })}
                 </SelectContent>
               </Select>
                   
-              <Select onValueChange={(val)=>setEnddate(val)}>
+              <Select onValueChange={(val)=>{console.log(val);setOutime(val)}}>
                 <SelectTrigger>
                   <SelectValue placeholder="Out Time" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="block-a">07:00</SelectItem>
-                  <SelectItem value="block-b">08:00</SelectItem>
-                  <SelectItem value="block-c">09:00</SelectItem>
-                
+                {times.map((time)=>{
+                     return <SelectItem value={time}>{time}</SelectItem>
+                })}
                 </SelectContent>
+                
               </Select>
             </div>
             <div className="space-y-2">
