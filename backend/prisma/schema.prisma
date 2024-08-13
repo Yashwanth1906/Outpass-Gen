@@ -24,17 +24,17 @@ model Student{
     department String
     op Outpass[]
     staffId1 String
-    staff1 Staff @relation("Staff1",fields: [staffId1],references: [id])
+    staff1 Staff @relation("Staff1",fields: [staffId1],references: [id],onDelete: Cascade)
     hodId String
     hod HOD @relation(fields: [hodId],references: [id])
     staffId2 String
-    staff2 Staff @relation("Staff2",fields: [staffId2],references: [id])
+    staff2 Staff @relation("Staff2",fields: [staffId2],references: [id],onDelete: Cascade)
 }
 
 model Outpass{
     id String @id @default(uuid())
     rollNo String
-    student Student @relation(fields: [rollNo],references: [id])
+    student Student @relation(fields: [rollNo],references: [id],onDelete: Cascade)
     startDate String
     endDate   String
     outTime String
@@ -65,20 +65,20 @@ model Staff{
 model StaffRequests{
     id String @id @default(uuid())
     staffId1 String
-    staff1 Staff @relation("Staff1Request",fields: [staffId1],references: [id])
+    staff1 Staff @relation("Staff1Request",fields: [staffId1],references: [id],onDelete: Cascade)
     staffId2 String
-    staff2 Staff @relation("Staff2Request",fields: [staffId2],references: [id])
+    staff2 Staff @relation("Staff2Request",fields: [staffId2],references: [id],onDelete: Cascade)
     outpassId String
-    outpass Outpass @relation(fields: [outpassId],references: [id])
+    outpass Outpass @relation(fields: [outpassId],references: [id],onDelete: Cascade)
     approveStatus String @default("Pending")
 }
 
 model HODRequests{
     id String @id @default(uuid())
     hodId String
-    Hod HOD @relation(fields: [hodId],references: [id])
+    Hod HOD @relation(fields: [hodId],references: [id],onDelete: Cascade)
     outpassId String
-    outpass Outpass @relation(fields: [outpassId],references: [id])
+    outpass Outpass @relation(fields: [outpassId],references: [id],onDelete: Cascade)
     approveStatus String @default("Pending")
 }
 

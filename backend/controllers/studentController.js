@@ -97,5 +97,4 @@ const studentLogin = async (req,res)=>{
     }
 }
 
-
 export {studentLogin,studentRegister}
